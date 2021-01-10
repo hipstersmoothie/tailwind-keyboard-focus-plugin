@@ -80,7 +80,7 @@ jobs:
           at: ~/tailwind-keyboard-focus-plugin
       - run:
           name: Release
-          command: yarn auto shipit -vv
+          command: git status && yarn auto shipit -vv
 
 workflows:
   version: 2
