@@ -1,0 +1,38 @@
+{
+  "name": "tailwind-keyboard-focus-plugin",
+  "version": "1.0.0",
+  "description": "A tailwindcss plugin that adds a 'keyboard-focus' variant.",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "typings": "./dist/index.d.ts",
+  "repository": "hipstersmoothie/tailwind-keyboard-focus-plugin",
+  "scripts": {
+    "build": "ds build",
+    "lint": "ds lint"
+  },
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "plugin",
+    "keyboard",
+    "focus",
+    "accessibility",
+    "a11y"
+  ],
+  "author": "Andrew Lisowski <lisowski54@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@auto-it/pr-body-labels": "^10.5.1",
+    "@design-systems/cli": "^2.11.0",
+    "@types/react": "^17.0.0",
+    "auto": "^10.5.1",
+    "react": "^17.0.1",
+    "tailwindcss": "^2.0.2"
+  },
+  "resolutions": {
+    "@types/react": "17.0.0"
+  },
+  "peerDependencies": {
+    "tailwindcss": ">= 2.x"
+  }
+}

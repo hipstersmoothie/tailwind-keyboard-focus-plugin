@@ -1,0 +1,105 @@
+version: 2.1
+
+defaults: &defaults
+  working_directory: ~/tailwind-keyboard-focus-plugin
+  docker:
+    - image: circleci/node:10-browsers
+  environment:
+    TZ: '/usr/share/zoneinfo/America/Los_Angeles'
+
+aliases:
+  # Circle related commands
+  - &restore-cache
+    keys:
+      # Find a cache corresponding to this specific package.json checksum
+      # when this file is changed, this key will fail
+      - tailwind-keyboard-focus-plugin-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+      - tailwind-keyboard-focus-plugin-{{ checksum "yarn.lock" }}
+      # Find the most recent cache used from any branch
+      - tailwind-keyboard-focus-plugin-
+  - &save-cache
+    key: tailwind-keyboard-focus-plugin-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+    paths:
+      - ~/.cache/yarn
+      - node_modules
+  # Yarn commands
+  - &yarn
+    name: Install Dependencies
+    command: yarn install --frozen-lockfile --non-interactive --cache-folder=~/.cache/yarn
+  - &lint
+    name: Lint
+    command: yarn lint
+  - &build
+    name: Build
+    command: yarn build
+
+jobs:
+  install:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache: *restore-cache
+      - run: *yarn
+      - save_cache: *save-cache
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/tailwind-keyboard-focus-plugin
+      - run: *build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/tailwind-keyboard-focus-plugin
+      - run: *lint
+
+  pr-check:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/tailwind-keyboard-focus-plugin
+      - run:
+          name: Check for SemVer Label
+          command: yarn auto pr-check --url $CIRCLE_BUILD_URL
+
+  release:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/tailwind-keyboard-focus-plugin
+      - run:
+          name: Release
+          command: yarn auto shipit -vv
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - install
+
+      - build:
+          requires:
+            - install
+
+      - pr-check:
+          requires:
+            - build
+
+      - lint:
+          requires:
+            - build
+
+      - release:
+          requires:
+            - lint
