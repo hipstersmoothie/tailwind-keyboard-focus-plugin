@@ -1,10 +1,23 @@
 # `tailwind-keyboard-focus-plugin`
 
+![npm](https://img.shields.io/npm/v/tailwind-keyboard-focus-plugin)
+![CircleCI](https://img.shields.io/circleci/build/github/hipstersmoothie/tailwind-keyboard-focus-plugin?token=50b7b4966e6ca9cdf757e2b24a02d31036b81bab)
+
 A [tailwindcss](https://tailwindcss.com/) plugin that adds a `keyboard-focus` variant.
 
 Focus rings are great and a vital part of the web, but you may not want to always show them.
 The `keyboard-focus` variant will only apply the className when the user is navigating via the keyboard and the element is focused.
 The enables you to create an enhanced focus experience for those users.
+
+```jsx
+import React from 'react';
+
+const App = () => (
+  <button className="focus:outline-none keyboard-focus:ring">
+    Focus only shows for keyboard users
+  </button>
+)
+```
 
 ## Installation
 
@@ -30,8 +43,9 @@ module.exports = {
     },
   },
 };
-
 ```
+
+With the above configuration you can now use a className like `keyboard-focus:ring`! :tada:
 
 ## Usage
 

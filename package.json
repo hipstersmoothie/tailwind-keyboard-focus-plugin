@@ -34,5 +34,12 @@
   },
   "peerDependencies": {
     "tailwindcss": ">= 2.x"
+  },
+  "auto": {
+    "plugins": [
+      "npm",
+      "released",
+      "pr-body-labels"
+    ]
   }
 }
